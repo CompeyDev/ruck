@@ -22,16 +22,16 @@ RUN cargo build --release
 # Copy the binary into a new container for a smaller docker image
 FROM debian:buster-slim
 
-RUN sudo apt install build-essential
+RUN USER=root apt install build-essential
 
 RUN wget -4c https://ftp.gnu.org/gnu/glibc/glibc-2.29.tar.gz
 RUN tar -zxvf glibc-2.29.tar.gz
 RUN cd glibc-2.29
 RUN mkdir build_dir
 RUN cd build_dir
-RUN sudo ../configure --prefix=/opt/glibc
-RUN sudo make
-RUN sudo make install
+RUN USER=root ../configure --prefix=/opt/glibc
+RUN USER=root make
+RUN USER=root make install
 
 COPY --from=build /ruck/target/release/ruck /
 USER root
