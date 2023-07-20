@@ -28,8 +28,8 @@ async fn main() -> Result<(), Box<dyn Error>> {
             println!("Receiving password {}", password);
             receive(password).await?
         }
-        Commands::Relay {} => {
-            serve().await?;
+        Commands::Relay { port } => {
+            serve(port.to_owned()).await?;
         }
     }
     Ok(())

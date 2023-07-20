@@ -29,5 +29,8 @@ pub enum Commands {
         password: String,
     },
     /// Start relay server
-    Relay {},
+    Relay {
+        #[clap(value_parser, required = false)]
+        port: Option<u16>,
+    },
 }

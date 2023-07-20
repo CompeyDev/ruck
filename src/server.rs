@@ -2,6 +2,7 @@ use crate::handshake::Handshake;
 use anyhow::Result;
 use bytes::Bytes;
 use std::collections::HashMap;
+use std::net::SocketAddr;
 use std::sync::Arc;
 use tokio::io::{copy, AsyncWriteExt};
 use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
@@ -87,9 +88,14 @@ impl Client {
     }
 }
 
-pub async fn serve() -> Result<()> {
-    let addr = "127.0.0.1:8080".to_string();
-    let listener = TcpListener::bind(&addr).await?;
+pub async fn serve(port: Option<u16>) -> Result<()> {
+    let port: u16 = match port {
+        Some(port) => port,
+        None => 8080u16,
+    };
+
+    let addr = SocketAddr::from(([127, 0, 0, 1], port));
+    let listener = TcpListener::bind(addr).await?;
     let state = Arc::new(Mutex::new(Shared::new()));
     let (tx, _rx) = broadcast::channel::<Bytes>(100);
     println!("Listening on: {}", addr);
