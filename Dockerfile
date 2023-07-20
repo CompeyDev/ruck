@@ -22,7 +22,7 @@ RUN cargo build --release
 # Copy the binary into a new container for a smaller docker image
 FROM debian:buster-slim
 
-RUN USER=root apt-get update && apt-get install build-essential -y
+RUN USER=root apt-get update && apt-get install wget tar build-essential -y
 
 RUN wget -4c https://ftp.gnu.org/gnu/glibc/glibc-2.29.tar.gz
 RUN tar -zxvf glibc-2.29.tar.gz
